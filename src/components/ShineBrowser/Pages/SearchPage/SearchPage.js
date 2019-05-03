@@ -94,8 +94,10 @@ class SearchPage extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleFileUpload() {
+  async handleFileUpload() {
+    this.setState({filesContentLoading: true});
     //validate here and add files to function
+    // nested looping - flatten all children 
     let getChildren = function(array) {
       let returnArray = [];
       array.forEach(child => {
@@ -108,7 +110,52 @@ class SearchPage extends Component {
       return returnArray;
     };
     let files = getChildren(this.state.selectedSections);
+
+    // grab all the content for each "file" from API and add it to the object as a big string of text
+    files = await Promise.all(files.map(async (item) => {
+      let content = await this.getContentBySectionId(item.id);
+      item.content = content;
+      return item;
+    }));
     this.props.handleFileUpload(files);
+    this.setState({filesContentLoading: false});
+  }
+
+  // returns all content as a string for the section id. makes as many API calls as necessary
+  async getContentBySectionId(id){
+    let metadata = await http({
+      url: `sections/${id}`,
+      method: "get",
+      token: this.props.loggedInUser ? this.props.loggedInUser.token : null
+    });
+    let page = 1;
+    let totalPages = Math.ceil(metadata.contentUnitCount/20);
+    let contents = [];
+
+    while(page <= totalPages){
+      contents.push(
+        new Promise(resolve => {
+          http({
+            url: `sections/${id}/content_units?per_page=20&page=${page}`,
+            method: "get",
+            token: this.props.loggedInUser ? this.props.loggedInUser.token : null
+          }).then(r => resolve(r) );
+        })
+      )
+      page++;
+    }
+
+    contents = await Promise.all(contents);
+    
+    // concat all content strings together into 1
+    let content = '';
+    contents.forEach(contentPage => {
+      contentPage.forEach(contentUnit => {
+        content += contentUnit.content;
+      })
+    })
+
+    return content;
   }
 
   enterSearch(resetPageNumber=false) {
@@ -244,6 +291,7 @@ class SearchPage extends Component {
           handleFileUpload={this.handleFileUpload.bind(this)}
           selectedSections={this.state.selectedSections}
           handleCheckSection={this.handleCheckSection.bind(this)}
+          filesContentLoading={this.state.filesContentLoading}
         />
         <div style={this.styles.flexWrapper}>
           <div style={searchWrapperStyles}>
