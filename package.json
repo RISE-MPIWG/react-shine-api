@@ -4,7 +4,7 @@
   "description": "react component which allows the selection of files from the SHINE API",
   "author": "www.dbrsoftware.com",
   "license": "MIT",
-  "repository": "https://github.com/dbarker8/react-shine-api",
+  "repository": "https://github.com/RISE-MPIWG/react-shine-api",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
