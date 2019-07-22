@@ -65,14 +65,14 @@ class Homepage extends Component {
         <div>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <h2 style={{ margin: 0, padding: 0, display: "flex" }}>Collections</h2>
-            {this.props.loggedInUser ? null : (
+            {/* {this.props.loggedInUser ? null : (
               <div style={{ display: "flex", opacity: 0.5 }}>
                 To see more texts with private access rights,
                 <span class="shineLinkButton" style={{ marginLeft: 3 }} onClick={() => this.props.navigate("login")}>
                   sign in
                 </span>
               </div>
-            )}
+            )} */}
           </div>
           <p style={{ margin: 0, padding: 0 }}>Showing {shownCollections.length} Collections</p>
           <div style={this.styles.inputRow}>
@@ -138,16 +138,20 @@ class Homepage extends Component {
     inputRow: {
       display: "flex",
       // marginTop: 25,
+      marginLeft: 10,
+      marginRight: 10,
       clear: "both",
-      flexDirection: "row"
+      flexDirection: "row",
     },
     search: {
       borderRadius: 50,
-      paddingLeft: 16
+      paddingLeft: 16,
+      // marginLeft: 15,
+      // width: '100%'
     },
     searchWrapper: {
-      flex: 0.5,
-      paddingRight: 20
+      flex: 1,
+      // paddingRight: 20
     },
     selectWrapper: {
       flex: 0.25,

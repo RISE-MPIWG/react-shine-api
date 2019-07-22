@@ -336,14 +336,14 @@ class SearchPage extends Component {
                     {this.state.loading ? "..." : "Search"}
                   </div>
                 </div>
-                {this.props.loggedInUser ? null : (
+                {/* {this.props.loggedInUser ? null : (
                   <div style={this.styles.bottomMessage}>
                     To see more texts with private access rights,{" "}
                     <span class="shineLinkButton" onClick={() => this.props.navigate("login")}>
                       sign in
                     </span>
                   </div>
-                )}
+                )} */}
               </React.Fragment>
             ) : null}
           </div>
