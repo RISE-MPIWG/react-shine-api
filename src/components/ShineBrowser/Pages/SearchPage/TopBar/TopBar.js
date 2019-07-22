@@ -16,6 +16,8 @@ class TopBar extends Component {
 
   render() {
     let { isExpanded } = this.state;
+    let { filesContentLoading } = this.props;
+
     return (
       <div>
         <div style={this.styles.topbar}>
@@ -24,9 +26,13 @@ class TopBar extends Component {
           </div>
           <div style={this.styles.loadButtonWrapper}>
             <div style={this.styles.inside}>
-              <div class="shineButton" style={this.styles.loadButton} onClick={() => this.props.handleFileUpload()}>
-                Load
-              </div>
+              <button 
+                class="shineButton" 
+                style={this.styles.loadButton} 
+                onClick={filesContentLoading ? () => null : () => this.props.handleFileUpload()} 
+                disabled={filesContentLoading}>
+                {filesContentLoading ? 'Loading...' : 'Load'}
+              </button>
             </div>
           </div>
           <div style={this.styles.viewWrapper}>

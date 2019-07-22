@@ -58,9 +58,9 @@ class App extends Component {
 | ------ | ------ |
 | styles | customizable styles object (see below for details) |
 | close | optional. function that gets called when the user attempts to close the SHINE window. Setting this prop will display an X button in the upper corner  |
-| handleFileUpload | function that is called when the user is ready to upload their files. passes a files object (see below) |
+| handleFileUpload | function that is called when the user is ready to upload their files, once all the content for the files is ready. passes a files array (see below).  |
 
-### File Object
+### File Array
 An array of objects with the following structure
 ```json
 {
@@ -68,7 +68,8 @@ An array of objects with the following structure
     name: "孝義",
     parentUuid: "743711b7-c294-4619-90b3-963792248de4",
     uri: "https://urlname.com/4risesections/5379669",
-    uuid: "54d174f4-8bc9-4ee3-9abd-924239e684cd"
+    uuid: "54d174f4-8bc9-4ee3-9abd-924239e684cd",
+    content: "all content comes through here as a string"
 }
 ```
 
@@ -90,11 +91,13 @@ This component will take 100% height and width of its container. You can customi
 Run the below command to start the server for the react-shine-api module
 ```
 $ cd react-shine-api
+$ npm link
 $ npm start
 ```
 Next, (in a seperate terminal) run the below commands to start the example project that wraps the component. When you make changes, you will see them updated in this project.
 ```
 $ cd react-shine-api/example
+$ npm link react-shine-api
 $ npm start
 ```
 
