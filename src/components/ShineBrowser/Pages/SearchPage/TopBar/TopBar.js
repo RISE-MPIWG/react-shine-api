@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import ExpandContents from "./ExpandContents";
 import { upArrow } from '../../../../../img';
 
-
-
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -16,12 +14,24 @@ class TopBar extends Component {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
+  handeleBack(){
+    this.props.handleBack()
+  }
+
+
   render() {
     let { isExpanded } = this.state;
     let { filesContentLoading } = this.props;
     return (
       <div>
         <div style={this.styles.topbar}>
+          {this.props.page == 'search' &&
+            <div style={this.styles.loadButtonWrapper}>
+              <div style={this.styles.inside}>
+                <button  class="shineButton" style={this.styles.loadButton} onClick={this.handeleBack.bind(this)}>Back</button>
+              </div>
+            </div>
+          }
           <div style={this.styles.title} onClick={this.toggleExpand.bind(this)}>
             <strong>{this.props.selectedSections.length}</strong> <span style={this.styles.itemsSubtext}>items selected</span>
           </div>

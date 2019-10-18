@@ -3,7 +3,6 @@ import Constants, { http } from "../../../Constants";
 import CollectionCard from "../Components/CollectionCard";
 import Loading from "../Components/Loading";
 import TopBar from "./SearchPage/TopBar"
-
 import { TopBarContext } from '../../topbar-context'
 
 class Homepage extends Component {
@@ -76,6 +75,7 @@ class Homepage extends Component {
               selectedSections={selectedSections}
               handleFileUpload={this.props.handleFileUpload.bind(this)}
               filesContentLoading={this.props.filesContentLoading}
+              page={this.props.page}
             />
           )}
         </TopBarContext.Consumer>

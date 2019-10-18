@@ -229,7 +229,7 @@ class ShineBrowser extends Component {
   getPage() {
     let page = this.state.page;
     if (page == "home") {
-      return <Homepage styles={this.state.styles} navigate={this.navigate.bind(this)} loggedInUser={this.state.user} handleFileUpload={this.handleFileUpload.bind(this)} filesContentLoading={this.state.filesContentLoading} />;
+      return <Homepage styles={this.state.styles} navigate={this.navigate.bind(this)} loggedInUser={this.state.user} handleFileUpload={this.handleFileUpload.bind(this)} filesContentLoading={this.state.filesContentLoading} page={this.state.page}/>;
     }
 
     if (page == "search") {
@@ -245,6 +245,7 @@ class ShineBrowser extends Component {
           isChecked={this.isChecked.bind(this)}
           handleFileUpload={this.handleFileUpload.bind(this)}
           filesContentLoading={this.state.filesContentLoading}
+          page={this.state.page}
         />
       );
     }
@@ -268,7 +269,7 @@ class ShineBrowser extends Component {
         />
 
         <div className="shinePageWrapper">
-          <TopBarContext.Provider value={this.state.selectedSections}>
+          <TopBarContext.Provider value={this.state.selectedSections }>
             {this.getPage()}
           </TopBarContext.Provider>
         </div>

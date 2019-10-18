@@ -3,7 +3,6 @@ import TopBar from "./TopBar";
 import Constants, { http } from "../../../../Constants";
 import ContentSection from "./ContentSection/ContentSection";
 import { search } from '../../../../img';
-
 import {TopBarContext} from '../../../topbar-context'
 
 class SearchPage extends Component {
@@ -239,6 +238,14 @@ class SearchPage extends Component {
     });
   }
 
+  handleBack(){
+    if(this.state.depth == 1){
+      this.setState({depth: 0})
+    } else {
+      this.props.navigate('home')
+    }
+  }
+
 
   // handleCheckSection(newItem, value, e, checkChildren = true) {
   //   let newSelections = this.state.selectedSections;
@@ -300,6 +307,8 @@ class SearchPage extends Component {
               handleCheckSection={this.props.handleCheckSection.bind(this)}
               handleFileUpload={this.props.handleFileUpload.bind(this)}
               filesContentLoading={this.props.filesContentLoading}
+              handleBack={this.handleBack.bind(this)}
+              page={this.props.page}
             />
           )}
         </TopBarContext.Consumer>
