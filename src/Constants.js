@@ -10,7 +10,7 @@ export let http = function(info){
       'Content-Type': 'application/json',
     };
     if(info.token) headers['rise-api-token'] = info.token;
-    
+
     fetch(Constants.api + info.url, {
       method: info.route,
       headers: headers

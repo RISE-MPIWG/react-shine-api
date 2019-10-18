@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Constants, { http } from "../../../Constants";
 import CollectionCard from "../Components/CollectionCard";
 import Loading from "../Components/Loading";
+import TopBar from "./SearchPage/TopBar"
+
+import { TopBarContext } from '../../topbar-context'
 
 class Homepage extends Component {
   constructor(props) {
@@ -10,13 +13,14 @@ class Homepage extends Component {
       collections: [],
       searchText: "",
       selectedLanguage: 'all',
-      loading: true
+      loading: true,
+      selectedSections: [],
+      filesContentLoading: false
     };
   }
 
   componentDidMount() {
     this.getCollections();
-
   }
 
   handleSelectChange(e) {
@@ -28,6 +32,8 @@ class Homepage extends Component {
   viewCollection(id) {
     this.props.navigate("search", { collection: id });
   }
+
+
 
   getCollections() {
     let url = `collections?page=1&per_page=150`;
@@ -63,18 +69,30 @@ class Homepage extends Component {
           <br />
         </div> */}
         <div>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <h2 style={{ margin: 0, padding: 0, display: "flex" }}>Collections</h2>
-            {/* {this.props.loggedInUser ? null : (
-              <div style={{ display: "flex", opacity: 0.5 }}>
-                To see more texts with private access rights,
-                <span class="shineLinkButton" style={{ marginLeft: 3 }} onClick={() => this.props.navigate("login")}>
-                  sign in
-                </span>
+        <TopBarContext.Consumer>
+          { selectedSections => (
+            <TopBar
+              styles={this.props.styles}
+              selectedSections={selectedSections}
+              handleFileUpload={this.props.handleFileUpload.bind(this)}
+              filesContentLoading={this.props.filesContentLoading}
+            />
+          )}
+        </TopBarContext.Consumer>
+          <div style={{ padding:10 }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between",}}>
+              <h2 style={{ margin: 0, padding: 0, display: "flex" }}>Collections</h2>
+              {/*}{this.props.loggedInUser ? null : (
+                <div style={{ display: "flex", opacity: 0.5 }}>
+                  To see more texts with private access rights,
+                  <span class="shineLinkButton" style={{ marginLeft: 3 }} onClick={() => this.props.navigate("login")}>
+                    sign in
+                  </span>
+                </div>
+              )}*/}
               </div>
-            )} */}
-          </div>
-          <p style={{ margin: 0, padding: 0 }}>Showing {shownCollections.length} Collections</p>
+              <p style={{ margin: 0, padding: 0 }}>Showing {shownCollections.length} Collections</p>
+            </div>
           <div style={this.styles.inputRow}>
             <div style={this.styles.searchWrapper}>
               <div style={this.styles.selectLabel}>
@@ -133,7 +151,7 @@ class Homepage extends Component {
       position: "relative",
       overflow: "auto",
       minHeight: 0, // dont change. for flexbox scrolling
-      padding: 10
+      // padding: 10
     },
     inputRow: {
       display: "flex",

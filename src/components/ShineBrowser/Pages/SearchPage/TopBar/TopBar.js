@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ExpandContents from "./ExpandContents";
 import { upArrow } from '../../../../../img';
 
+
+
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,6 @@ class TopBar extends Component {
   render() {
     let { isExpanded } = this.state;
     let { filesContentLoading } = this.props;
-
     return (
       <div>
         <div style={this.styles.topbar}>
@@ -26,10 +27,10 @@ class TopBar extends Component {
           </div>
           <div style={this.styles.loadButtonWrapper}>
             <div style={this.styles.inside}>
-              <button 
-                class="shineButton" 
-                style={this.styles.loadButton} 
-                onClick={filesContentLoading ? () => null : () => this.props.handleFileUpload()} 
+              <button
+                class="shineButton"
+                style={this.styles.loadButton}
+                onClick={filesContentLoading ? () => null : () => this.props.handleFileUpload()}
                 disabled={filesContentLoading}>
                 {filesContentLoading ? 'Loading...' : 'Load'}
               </button>

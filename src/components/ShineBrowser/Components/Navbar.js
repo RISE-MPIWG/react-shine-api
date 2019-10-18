@@ -57,7 +57,7 @@ class Navbar extends Component {
           Search
         </span>
 
-        {/* {this.props.loggedInUser ? (
+        {/*{this.props.loggedInUser ? (
           <span style={styles.link} onClick={() => this.props.navigate("logout")}>
             Log Out
           </span>
@@ -65,13 +65,13 @@ class Navbar extends Component {
           <span style={this.props.page=='login' ? activeLink : styles.link} onClick={() => this.props.navigate("login")}>
             Sign In
           </span>
-        )} */}
+        )}
         <span style={styles.right}>
           {this.props.loggedInUser ? <span style={styles.link}>{this.props.loggedInUser.email}</span> : null}
-          {this.props.close ? 
+          {this.props.close ?
           <img onClick={this.props.close} src={close} class="closeIcon" />
           :null}
-        </span>
+        </span> */}
       </div>
       </div>
     );

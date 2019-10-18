@@ -4,6 +4,8 @@ import Constants, { http } from "../../../../Constants";
 import ContentSection from "./ContentSection/ContentSection";
 import { search } from '../../../../img';
 
+import {TopBarContext} from '../../../topbar-context'
+
 class SearchPage extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +34,8 @@ class SearchPage extends Component {
       searchIconOpacity: 0.3,
       searchContentFadeTransition: ".2s"
     };
+
+
   }
 
   componentDidMount() {
@@ -94,32 +98,32 @@ class SearchPage extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  async handleFileUpload() {
-    this.setState({filesContentLoading: true});
-    //validate here and add files to function
-    // nested looping - flatten all children 
-    let getChildren = function(array) {
-      let returnArray = [];
-      array.forEach(child => {
-        if (child.children) {
-          returnArray.concat(getChildren(child));
-        } else {
-          returnArray.push(child);
-        }
-      });
-      return returnArray;
-    };
-    let files = getChildren(this.state.selectedSections);
-
-    // grab all the content for each "file" from API and add it to the object as a big string of text
-    files = await Promise.all(files.map(async (item) => {
-      let content = await this.getContentBySectionId(item.id);
-      item.content = content;
-      return item;
-    }));
-    this.props.handleFileUpload(files);
-    this.setState({filesContentLoading: false});
-  }
+  // async handleFileUpload() {
+  //   this.setState({filesContentLoading: true});
+  //   //validate here and add files to function
+  //   // nested looping - flatten all children
+  //   let getChildren = function(array) {
+  //     let returnArray = [];
+  //     array.forEach(child => {
+  //       if (child.children) {
+  //         returnArray.concat(getChildren(child));
+  //       } else {
+  //         returnArray.push(child);
+  //       }
+  //     });
+  //     return returnArray;
+  //   };
+  //   let files = getChildren(this.state.selectedSections);
+  //
+  //   // grab all the content for each "file" from API and add it to the object as a big string of text
+  //   files = await Promise.all(files.map(async (item) => {
+  //     let content = await this.getContentBySectionId(item.id);
+  //     item.content = content;
+  //     return item;
+  //   }));
+  //   this.props.handleFileUpload(files);
+  //   this.setState({filesContentLoading: false});
+  // }
 
   // returns all content as a string for the section id. makes as many API calls as necessary
   async getContentBySectionId(id){
@@ -146,7 +150,7 @@ class SearchPage extends Component {
     }
 
     contents = await Promise.all(contents);
-    
+
     // concat all content strings together into 1
     let content = '';
     contents.forEach(contentPage => {
@@ -173,14 +177,14 @@ class SearchPage extends Component {
   }
 
   // figure out if this sections uuid is selected and return it true/false
-  isChecked(node) {
-    let uuid = node.uuid;
-    let selected = false;
-    this.state.selectedSections.forEach(section => {
-      if (section.uuid == uuid) selected = true;
-    });
-    return selected;
-  }
+  // isChecked(node) {
+  //   let uuid = node.uuid;
+  //   let selected = false;
+  //   this.state.selectedSections.forEach(section => {
+  //     if (section.uuid == uuid) selected = true;
+  //   });
+  //   return selected;
+  // }
 
   getResources(type) {
     // create URLs
@@ -235,33 +239,35 @@ class SearchPage extends Component {
     });
   }
 
-  handleCheckSection(newItem, value, e, checkChildren = true) {
-    let newSelections = this.state.selectedSections;
-    let exists = false;
-    let existingIndex = null;
-    newSelections.forEach((item, index) => {
-      if (item.uuid == newItem.uuid) {
-        exists = true;
-        existingIndex = index;
-      }
-    });
 
-    let hasChildren = newItem.children ? true : false;
-
-    if (hasChildren) {
-      // if any child is checked, uncheck them all. otherwise check them all
-      newItem.children.forEach(child => {
-        if (this.isChecked(child)) checkChildren = false;
-      });
-      newItem.children.forEach(child => {
-        this.handleCheckSection(child, checkChildren, e, checkChildren);
-      });
-    }
-
-    if (!exists && value === true && !hasChildren) newSelections.push(newItem);
-    if (value === false && exists) newSelections.splice(existingIndex, 1);
-    this.setState({ selectedSections: newSelections });
-  }
+  // handleCheckSection(newItem, value, e, checkChildren = true) {
+  //   let newSelections = this.state.selectedSections;
+  //   let exists = false;
+  //   let existingIndex = null;
+  //   newSelections.forEach((item, index) => {
+  //     if (item.uuid == newItem.uuid) {
+  //       exists = true;
+  //       existingIndex = index;
+  //     }
+  //   });
+  //
+  //   let hasChildren = newItem.children ? true : false;
+  //
+  //   if (hasChildren) {
+  //     // if any child is checked, uncheck them all. otherwise check them all
+  //     newItem.children.forEach(child => {
+  //       if (this.isChecked(child)) checkChildren = false;
+  //     });
+  //     newItem.children.forEach(child => {
+  //       this.props.handleCheckSection(child, checkChildren, e, checkChildren);
+  //     });
+  //   }
+  //
+  //   if (!exists && value === true && !hasChildren) newSelections.push(newItem);
+  //   if (value === false && exists) newSelections.splice(existingIndex, 1);
+  //   this.setState({ selectedSections: newSelections });
+  //   console.log(newSelections)
+  // }
 
   render() {
     let searchWrapperStyles = {
@@ -286,13 +292,17 @@ class SearchPage extends Component {
     };
     return (
       <React.Fragment>
-        <TopBar
-          styles={this.props.styles}
-          handleFileUpload={this.handleFileUpload.bind(this)}
-          selectedSections={this.state.selectedSections}
-          handleCheckSection={this.handleCheckSection.bind(this)}
-          filesContentLoading={this.state.filesContentLoading}
-        />
+        <TopBarContext.Consumer>
+          { selectedSections  => (
+            <TopBar
+              styles={this.props.styles}
+              selectedSections={selectedSections}
+              handleCheckSection={this.props.handleCheckSection.bind(this)}
+              handleFileUpload={this.props.handleFileUpload.bind(this)}
+              filesContentLoading={this.props.filesContentLoading}
+            />
+          )}
+        </TopBarContext.Consumer>
         <div style={this.styles.flexWrapper}>
           <div style={searchWrapperStyles}>
             {this.state.showSearchIcon ? (
@@ -396,7 +406,7 @@ class SearchPage extends Component {
             ) : null}
           </div>
           <ContentSection
-            handleCheckSection={this.handleCheckSection.bind(this)}
+            handleCheckSection={this.props.handleCheckSection.bind(this)}
             styles={this.props.styles}
             selectedSections={this.state.selectedSections}
             resources={this.state.resources}
@@ -409,9 +419,10 @@ class SearchPage extends Component {
             handleSelectPage={this.handleSelectPage.bind(this)}
             currentPage={this.state.currentPage}
             loggedInUser={this.props.loggedInUser}
-            isChecked={this.isChecked.bind(this)}
+            isChecked={this.props.isChecked.bind(this)}
           />
         </div>
+
       </React.Fragment>
     );
   }
