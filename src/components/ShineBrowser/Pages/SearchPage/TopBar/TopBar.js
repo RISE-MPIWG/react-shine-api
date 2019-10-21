@@ -28,7 +28,11 @@ class TopBar extends Component {
           {this.props.page == 'search' &&
             <div style={this.styles.loadButtonWrapper}>
               <div style={this.styles.inside}>
-                <button  class="shineButton" style={this.styles.loadButton} onClick={this.handeleBack.bind(this)}>Back</button>
+                <button  class="shineButton" style={this.styles.loadButton} onClick={this.handeleBack.bind(this)}>
+                  <span>
+                    <img src={upArrow} class="shineViewButtonImage" style={this.styles.rotated} />
+                  </span>
+                Back</button>
               </div>
             </div>
           }
@@ -114,6 +118,11 @@ class TopBar extends Component {
       backgroundColor: this.props.styles.primary,
       color: "white",
       borderRadius: this.props.styles.borderRadius
+    },
+    rotated: {
+      filter: "invert(1)",
+      transform: 'rotate(-90deg)',
+      marginRight: '5px'
     }
   };
 }
