@@ -143,6 +143,29 @@
   transition: 0.2s;
 }
 
+.CSSBadge {
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.CSSBadge-icon {
+  width: 24px;
+}
+
+.CSSBadge-number {
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: block;
+  height: 16px;
+  /* text-align: justify; */
+  font-size: 16px;
+  /* vertical-align: super; */
+  line-height: 16px;
+}
+
 .shineContentSection {
   position: "absolute";
   top: 0px;

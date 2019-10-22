@@ -246,6 +246,12 @@ class SearchPage extends Component {
     }
   }
 
+  handleEnterPress(e) {
+    if (e.key === 'Enter') {
+      this.enterSearch()
+    }
+  }
+
 
   // handleCheckSection(newItem, value, e, checkChildren = true) {
   //   let newSelections = this.state.selectedSections;
@@ -335,6 +341,7 @@ class SearchPage extends Component {
                     value={this.state.searchText}
                     name="searchText"
                     onChange={x => this.setState({ searchText: x.target.value })}
+                    onKeyPress={this.handleEnterPress.bind(this)}
                   />
                   <h4 style={this.styles.searchTitle}>Search For:</h4>
                   <div style={this.styles.checkboxRow}>
