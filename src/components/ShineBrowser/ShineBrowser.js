@@ -246,6 +246,7 @@ class ShineBrowser extends Component {
           handleFileUpload={this.handleFileUpload.bind(this)}
           filesContentLoading={this.state.filesContentLoading}
           page={this.state.page}
+
         />
       );
     }

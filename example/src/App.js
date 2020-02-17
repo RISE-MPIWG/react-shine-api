@@ -6,6 +6,7 @@ export default class App extends Component {
 
   handleFileUpload(files){
     console.log('file upload')
+    console.log(files)
     files.forEach(file => console.log('file contnet length: '+file.content.length))
   }
 

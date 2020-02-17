@@ -191,6 +191,7 @@ class SearchPage extends Component {
     if(this.state.searchText){
       if(this.state.includeAuthor) queryStrings = queryStrings+`&author_filter=${this.state.searchText}`;
       if(this.state.includeName) queryStrings = queryStrings+`&filter=${this.state.searchText}`;
+      if(this.state.includeMetadata) queryStrings = queryStrings+`&metadata_filter=${this.state.searchText}`;
     }
     if(this.state.selectedLanguage && this.state.selectedLanguage!='all')
       queryStrings = queryStrings+`&language_filter=${this.state.selectedLanguage}`;
@@ -363,7 +364,7 @@ class SearchPage extends Component {
                       Author
                     </div>
                     {/* api doesnt support this filter yet */}
-                    {/* <div style={this.styles.checkboxWrapper}>
+                    <div style={this.styles.checkboxWrapper}>
                       <input
                         type="checkbox"
                         checked={this.state.includeMetadata}
@@ -371,7 +372,7 @@ class SearchPage extends Component {
                         onChange={this.handleCheckboxChange.bind(this)}
                       />
                       Metadata
-                    </div> */}
+                    </div>
                   </div>
                   <div style={this.styles.selectWrapper}>
                     <div style={this.styles.selectLabel}>Collection</div>
