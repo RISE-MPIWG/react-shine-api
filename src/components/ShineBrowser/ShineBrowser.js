@@ -28,7 +28,8 @@ class ShineBrowser extends Component {
         fontFamily: "Calibri",
         selectedItemsBackgroundColor: "rgb(237, 242, 245)"
       },
-      collections: []
+      collections: [],
+      errors: []
     };
     // set user specified styles
     if (props.styles) {
@@ -139,6 +140,8 @@ class ShineBrowser extends Component {
 
     if (!exists && value === true && !hasChildren) newSelections.push(newItem);
     if (value === false && exists) newSelections.splice(existingIndex, 1);
+
+
     this.setState({ selectedSections: newSelections });
 
   }
@@ -183,18 +186,19 @@ class ShineBrowser extends Component {
 
     while(page <= totalPages){
       contents.push(
-        new Promise(resolve => {
+        new Promise(reject => {
           http({
             url: `sections/${id}/content_units?per_page=20&page=${page}`,
             method: "get",
             token: this.props.loggedInUser ? this.props.loggedInUser.token : null
-          }).then(r => resolve(r) );
+          });
         })
       )
       page++;
     }
 
-    contents = await Promise.all(contents);
+    contents = await Promise.all(contents).catch((err) => { console.log(err); });;
+    console.log("contents", contents)
 
     // concat all content strings together into 1
     let content = '';

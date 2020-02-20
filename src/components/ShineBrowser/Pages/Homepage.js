@@ -32,8 +32,6 @@ class Homepage extends Component {
     this.props.navigate("search", { collection: id });
   }
 
-
-
   getCollections() {
     let url = `collections?page=1&per_page=150`;
     if(this.state.selectedLanguage!='all') url = url + `&language_filter=${this.state.selectedLanguage}`;

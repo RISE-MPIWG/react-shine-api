@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { http } from "../../../../../Constants";
 import Loading from "../../../Components/Loading";
+import Error from "../../../Components/Error";
 
 class ViewContentUnit extends Component {
   constructor(props) {
@@ -8,13 +9,14 @@ class ViewContentUnit extends Component {
     this.state = {
       contentUnits: [],
       loading: false,
-      currentPageLoaded: 1
+      currentPageLoaded: 1,
+      error: '',
     };
   }
 
   componentDidMount() {
   }
- 
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.section != this.props.section) {
       this.loadingNewContent = false;
@@ -34,14 +36,22 @@ class ViewContentUnit extends Component {
       method: "get",
       token: this.props.loggedInUser ? this.props.loggedInUser.token : null
     }).then(response => {
-      this.setState({
-        loading: false,
-        contentUnits: this.state.contentUnits.concat(response),
-      });
+      if(response['error']) {
+        this.setState({
+          error:response['error'],
+          loading: false
+        })
+      } else {
+        this.setState({
+          loading: false,
+          contentUnits: this.state.contentUnits.concat(response),
+        });
+      }
       this.loadingNewContent=false;
       if(response.length==0){
         this.loadingNewContent = true; //prevent any more attempts to load
       }
+
     });
   }
 
@@ -62,7 +72,8 @@ class ViewContentUnit extends Component {
       <div style={this.styles.wrapper} onScroll={x => this.handleScroll(x)}>
       <div style={this.styles.inside}>
       {this.state.loading ? <Loading color={this.props.styles.lightText}/> : null}
-        {this.state.contentUnits.length > 0 
+      {this.state.error.length !== 0 ? <Error message={this.state.error } /> : null }
+        {this.state.contentUnits.length > 0
           ? this.state.contentUnits.map(item => {
               return (
                 <p key={item.uuid} style={this.styles.contentUnit}>

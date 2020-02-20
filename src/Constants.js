@@ -1,5 +1,6 @@
  let Constants = {
   api: 'https://rise.mpiwg-berlin.mpg.de/api/',
+  //api: 'http://localhost:3000/api/'
 }
 export default Constants;
 
